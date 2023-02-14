@@ -103,6 +103,7 @@ uint8_t tx_data_buffer[(ENET_TXBD_NUM)][((unsigned int)(((ENET_TXBUFF_SIZE)) + (
 static bool mg_tcpip_driver_imxrt1020_init(struct mg_tcpip_if *ifp) {
 
   struct mg_tcpip_driver_imxrt1020_data *d = (struct mg_tcpip_driver_imxrt1020_data *) ifp->driver_data;
+  (void)*d;
   s_ifp = ifp;
 
   // ENET Reset, wait complete
