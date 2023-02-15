@@ -7,12 +7,13 @@ CFLAGS += -DMG_ARCH=MG_ARCH_CUSTOM -DMG_ENABLE_TCPIP=1 -DMG_ENABLE_DRIVER_IMXRT1
 CFLAGS += -DSERIAL_PORT_TYPE_SWO # SERIAL_PORT_TYPE_UART / SERIAL_PORT_TYPE_USBCDC / SERIAL_PORT_TYPE_SWO / SERIAL_PORT_TYPE_VIRTUAL
 CFLAGS += -DCPU_MIMXRT1021DAG5A -DCPU_MIMXRT1021DAG5A_cm7
 CFLAGS += $(CFLAGS_EXTRA)
-LDFLAGS ?= -Tlink_red.ld -nostdlib -nostartfiles --specs nano.specs -lc -lgcc -Wl,--gc-sections -Wl,-Map=$@.map
+LDFLAGS ?= -Tlink_red.ld -nostdlib -nostartfiles --specs nano.specs -Llibs -lc -lgcc -Wl,--gc-sections -Wl,-Map=$@.map
 
 SOURCES += mongoose.c net.c packed_fs.c main.c hal.c web_server.c syscalls.c
-SOURCES += startup/startup_mimxrt1021.c board/board.c
-SOURCES += fsl/fsl_debug_console.c fsl/fsl_gpio.c fsl/fsl_assert.c fsl/fsl_enet.c fsl/fsl_clock.c fsl/fsl_adapter_lpuart.c fsl/fsl_lpuart.c
+SOURCES += startup/startup_mimxrt1021.c board/system_MIMXRT1021.c board/board.c board/pin_mux.c board/clock_config.c
+SOURCES += fsl/fsl_debug_console.c fsl/fsl_gpio.c fsl/fsl_assert.c fsl/fsl_enet.c fsl/fsl_clock.c fsl/fsl_adapter_lpuart.c fsl/fsl_lpuart.c fsl/fsl_common_arm.c fsl/fsl_enet_mdio.c fsl/fsl_phyksz8081.c
 
+# fsl_common_arm.c
 # fsl_phyksz8081.c
 # fsl_adapter_lpuart.c
 # fsl_adapter_uart.h
