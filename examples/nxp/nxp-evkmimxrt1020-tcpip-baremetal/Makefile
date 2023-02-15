@@ -7,7 +7,7 @@ CFLAGS += -DMG_ARCH=MG_ARCH_CUSTOM -DMG_ENABLE_TCPIP=1 -DMG_ENABLE_DRIVER_IMXRT1
 CFLAGS += -DSERIAL_PORT_TYPE_SWO # SERIAL_PORT_TYPE_UART / SERIAL_PORT_TYPE_USBCDC / SERIAL_PORT_TYPE_SWO / SERIAL_PORT_TYPE_VIRTUAL
 CFLAGS += -DCPU_MIMXRT1021DAG5A -DCPU_MIMXRT1021DAG5A_cm7
 CFLAGS += $(CFLAGS_EXTRA)
-LDFLAGS ?= -nostartfiles
+LDFLAGS ?= -Tlink_red.ld -nostdlib -nostartfiles --specs nano.specs -lc -lgcc -Wl,--gc-sections -Wl,-Map=$@.map
 
 SOURCES += mongoose.c net.c packed_fs.c main.c hal.c web_server.c syscalls.c
 SOURCES += startup/startup_mimxrt1021.c board/board.c
@@ -30,9 +30,8 @@ all build example: firmware.bin
 firmware.bin: firmware.elf
 	arm-none-eabi-objcopy -O binary $< $@
 
-firmware.elf: $(SOURCES) hal.h link.ld
+firmware.elf: $(SOURCES) link_red.ld
 	arm-none-eabi-gcc $(SOURCES) $(CFLAGS) $(LDFLAGS) -o $@
-
 flash: firmware.bin
 	echo "make flash not implemented"
 
