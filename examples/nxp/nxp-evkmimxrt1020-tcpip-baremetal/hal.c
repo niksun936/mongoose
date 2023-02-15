@@ -90,3 +90,21 @@ void peripheral_enet_init(void) {
 	PHY_Init(&phyHandle, &phyConfig);
 	CLOCK_EnableClock(kCLOCK_Enet);
 }
+
+static inline void uart_init(USART_TypeDef *uart, unsigned long baud) {
+  // Todo
+}
+static inline void uart_write_byte(USART_TypeDef *uart, uint8_t byte) {
+  // Todo
+}
+static inline void uart_write_buf(USART_TypeDef *uart, char *buf, size_t len) {
+  while (len-- > 0) uart_write_byte(uart, *(uint8_t *) buf++);
+}
+static inline int uart_read_ready(USART_TypeDef *uart) {
+  // Todo
+  return 0;
+}
+static inline uint8_t uart_read_byte(USART_TypeDef *uart) {
+  // Todo
+  return (uint8_t) 0;
+}

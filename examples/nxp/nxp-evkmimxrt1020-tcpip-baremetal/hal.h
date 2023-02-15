@@ -23,12 +23,23 @@
 #include "fsl_gpio.h"
 #include "fsl_iomuxc.h"
 
+#ifndef UART_DEBUG
+#define UART_DEBUG 0 // Todo USART1
+#endif
+
+// Todo
+typedef struct {
+  uint16_t reserved;
+} USART_TypeDef;
+
 void set_user_led(int);
 void toggle_user_led();
 void peripheral_enet_init(void);
 void clock_init(void);
 void board_init(void);
 
-#ifndef UART_DEBUG
-#define UART_DEBUG SDK_DEBUGCONSOLE
-#endif
+static inline void uart_write_byte(USART_TypeDef *uart, uint8_t byte);
+static inline void uart_write_buf(USART_TypeDef *uart, char *buf, size_t len);
+static inline int uart_read_ready(USART_TypeDef *uart);
+static inline uint8_t uart_read_byte(USART_TypeDef *uart);
+static inline void uart_init(USART_TypeDef *uart, unsigned long baud);
