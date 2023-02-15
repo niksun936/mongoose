@@ -43,6 +43,9 @@ MEMORY
   __top_NCACHE_REGION = 0x81e00000 + 0x200000 ; /* 2M bytes */  
   __top_RAM5 = 0x81e00000 + 0x200000 ; /* 2M bytes */  
 
+  __NCACHE_REGION_SIZE = __top_NCACHE_REGION - __base_NCACHE_REGION ;
+  __NCACHE_REGION_START = __base_NCACHE_REGION ;
+
 
 ENTRY(ResetISR)
 

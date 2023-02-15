@@ -6,6 +6,14 @@
 #include <string.h>
 #include "hal.h"
 
+#define ASSERT(expr)                                            \
+  do {                                                          \
+    if (!(expr)) {                                              \
+      PRINTF("FAILURE %s:%d: %s\n", __FILE__, __LINE__, #expr); \
+      abort();                                                  \
+    }                                                           \
+  } while (0)
+
 #define BIT(x) (1UL << (x))
 #define SETBITS(R, CLEARMASK, SETMASK) (R) = ((R) & ~(CLEARMASK)) | (SETMASK)
 
