@@ -9,8 +9,15 @@ CFLAGS += -DCPU_MIMXRT1021DAG5A -DCPU_MIMXRT1021DAG5A_cm7
 CFLAGS += $(CFLAGS_EXTRA)
 LDFLAGS ?= -nostartfiles
 
-SOURCES += mongoose.c net.c packed_fs.c main.c
-SOURCES += startup/startup_mimxrt1021.c board/board.c fsl/fsl_debug_console.c
+SOURCES += mongoose.c net.c packed_fs.c main.c hal.c web_server.c syscalls.c
+SOURCES += startup/startup_mimxrt1021.c board/board.c
+SOURCES += fsl/fsl_debug_console.c fsl/fsl_gpio.c fsl/fsl_assert.c fsl/fsl_enet.c fsl/fsl_clock.c fsl/fsl_adapter_lpuart.c fsl/fsl_lpuart.c
+
+# fsl_phyksz8081.c
+# fsl_adapter_lpuart.c
+# fsl_adapter_uart.h
+# fsl_assert.c
+# fsl_gpio.c
 
 ifeq ($(OS),Windows_NT)
   RM = cmd /C del /Q /F /S

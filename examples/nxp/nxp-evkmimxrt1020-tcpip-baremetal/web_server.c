@@ -3,7 +3,7 @@
 
 #include "mongoose.h"
 #include "hal.h"
-#include "mg_web_server.h"
+#include "web_server.h"
 
 static const char *s_listening_address = "http://0.0.0.0:80";
 int mg_led_state = MG_LED_STANDBY;

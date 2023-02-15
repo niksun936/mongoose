@@ -28,3 +28,7 @@ void toggle_user_led();
 void peripheral_enet_init(void);
 void clock_init(void);
 void board_init(void);
+
+#ifndef UART_DEBUG
+#define UART_DEBUG SDK_DEBUGCONSOLE
+#endif
