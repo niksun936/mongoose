@@ -33,8 +33,9 @@ firmware.bin: firmware.elf
 
 firmware.elf: $(SOURCES) link_red.ld
 	arm-none-eabi-gcc $(SOURCES) $(CFLAGS) $(LDFLAGS) -o $@
+
 flash: firmware.bin
-	echo "make flash not implemented"
+	JLinkExe -device MIMXRT1021XXX5A -CommandFile jlink.cmd
 
 clean:
 	@rm -rf firmware.* *.su
