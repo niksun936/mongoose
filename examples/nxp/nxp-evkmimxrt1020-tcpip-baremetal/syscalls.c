@@ -12,7 +12,7 @@ void *_sbrk(int incr) {
   extern char __section_table_end; // _end;
   static unsigned char *heap = NULL;
   unsigned char *prev_heap;
-  unsigned char x = 0, *heap_end = (unsigned char *)((size_t) &x - 512);
+  unsigned char x = 0, *heap_end = (unsigned char *)((size_t) &x - 128);
   (void) x;
   if (heap == NULL) heap = (unsigned char *) __section_table_end; // &_end;
   prev_heap = heap;
