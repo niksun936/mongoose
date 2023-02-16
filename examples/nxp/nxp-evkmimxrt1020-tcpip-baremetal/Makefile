@@ -13,13 +13,6 @@ SOURCES += mongoose.c net.c packed_fs.c main.c hal.c web_server.c syscalls.c
 SOURCES += startup/startup_mimxrt1021.c board/system_MIMXRT1021.c board/board.c board/pin_mux.c board/clock_config.c
 SOURCES += fsl/fsl_debug_console.c fsl/fsl_gpio.c fsl/fsl_assert.c fsl/fsl_enet.c fsl/fsl_clock.c fsl/fsl_adapter_lpuart.c fsl/fsl_lpuart.c fsl/fsl_common_arm.c fsl/fsl_enet_mdio.c fsl/fsl_phyksz8081.c
 
-# fsl_common_arm.c
-# fsl_phyksz8081.c
-# fsl_adapter_lpuart.c
-# fsl_adapter_uart.h
-# fsl_assert.c
-# fsl_gpio.c
-
 ifeq ($(OS),Windows_NT)
   RM = cmd /C del /Q /F /S
 else
