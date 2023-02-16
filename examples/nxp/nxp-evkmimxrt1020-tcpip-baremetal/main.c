@@ -24,8 +24,6 @@
 
 void mg_log_set_fn(mg_pfn_t, void *);
 void log_fn(char ch, void *param) {
-	if (ch == '\n')
-		PUTCHAR('\r'); // Prepend CR
 	PUTCHAR(ch);
 }
 
@@ -102,7 +100,7 @@ int main(void)
 	mif.gw = 0x0103000a;    // 10.0.3.1
 #endif
 
-	mg_tcpip_init(&mgr, &mif);				// Initialize MIP driver
+	mg_tcpip_init(&mgr, &mif);  		// Initialize MIP driver
 	NVIC_EnableIRQ(ENET_IRQn);  		// Enable ENET IRQ
 
 	// Stack initialization, Network configuration (DHCP lease, ...)

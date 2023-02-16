@@ -6,22 +6,20 @@
 
 #pragma once
 
+/*
+// Using SDK
 #include "MIMXRT1021.h"
 #include "MIMXRT1021_features.h"
 #include "board.h"
-#include <stdlib.h>
 #include "pin_mux.h"
 #include "clock_config.h"
-#include "board.h"
-#include "fsl_debug_console.h"
-#include "fsl_enet.h"
-#include "fsl_phy.h"
-#include "fsl_silicon_id.h"
+*/
 
-#include "fsl_enet_mdio.h"
-#include "fsl_phyksz8081.h"
-#include "fsl_gpio.h"
-#include "fsl_iomuxc.h"
+#include "MIMXRT1021.h"
+#include <core_cm7.h>
+
+#include <stdlib.h>
+#include <stdint.h>
 
 #ifndef UART_DEBUG
 #define UART_DEBUG 0 // Todo USART1
@@ -37,6 +35,7 @@ void toggle_user_led();
 void peripheral_enet_init(void);
 void clock_init(void);
 void board_init(void);
+int PRINTF(const char *fmt_s, ...);
 
 static inline void uart_write_byte(USART_TypeDef *uart, uint8_t byte);
 static inline void uart_write_buf(USART_TypeDef *uart, char *buf, size_t len);

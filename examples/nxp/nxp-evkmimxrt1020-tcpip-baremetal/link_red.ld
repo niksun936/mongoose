@@ -1,3 +1,5 @@
+/* Link with SDK */
+
 GROUP (
   "libcr_nohost_nf.a"
   "libcr_c.a"

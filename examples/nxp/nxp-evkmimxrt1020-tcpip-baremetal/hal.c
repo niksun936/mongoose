@@ -1,9 +1,10 @@
 
 
+#include <stdarg.h>
 #include <stdbool.h>
+#include <string.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <string.h>
 #include "hal.h"
 
 #define ASSERT(expr)                                            \
@@ -18,10 +19,12 @@
 #define SETBITS(R, CLEARMASK, SETMASK) (R) = ((R) & ~(CLEARMASK)) | (SETMASK)
 
 void set_user_led(int i) {
+/*
 	if (!i)
 		GPIO_PinWrite(BOARD_USER_LED_GPIO, BOARD_USER_LED_GPIO_PIN, 1U); // Led OFF
 	else
 		GPIO_PinWrite(BOARD_USER_LED_GPIO, BOARD_USER_LED_GPIO_PIN, 0U); // Led ON
+*/
 }
 
 void toggle_user_led()
@@ -43,6 +46,8 @@ void toggle_user_led()
  */
 
 void board_init(void) {
+    // SDK Version
+/*
     // Hardware Initialization.
     const gpio_pin_config_t gpio_config = {kGPIO_DigitalOutput, 0, kGPIO_NoIntmode};
 
@@ -58,6 +63,7 @@ void board_init(void) {
     GPIO_PinWrite(BOARD_USER_LED_GPIO, BOARD_USER_LED_GPIO_PIN, 1U);
 
     ASSERT(!SysTick_Config(SystemCoreClock / 1000U)); // 1ms
+*/
 }
 
 /*
@@ -68,15 +74,19 @@ void board_init(void) {
 
 void clock_init(void)
 {
-	// PHY: clk 50 MHz
+    // PHY: clk 50 MHz
+/*
     const clock_enet_pll_config_t config = {.enableClkOutput = true, .enableClkOutput500M = true, .loopDivider = 1};
     CLOCK_InitEnetPll(&config);
     IOMUXC_EnableMode(IOMUXC_GPR, kIOMUXC_GPR_ENET1TxClkOutputDir, true);
+*/
 }
 
 // for Clocks, IOs and ENET
 void peripheral_enet_init(void) {
-	const gpio_pin_config_t gpio_config = {kGPIO_DigitalOutput, 0, kGPIO_NoIntmode};
+/*
+    // SDK Version
+    const gpio_pin_config_t gpio_config = {kGPIO_DigitalOutput, 0, kGPIO_NoIntmode};
     // GPIO Setup
     GPIO_PinInit(GPIO1, 4, &gpio_config);  // PHY: #RST
     GPIO_PinInit(GPIO1, 22, &gpio_config); // PHY: INTRP
@@ -97,6 +107,14 @@ void peripheral_enet_init(void) {
 
 	PHY_Init(&phyHandle, &phyConfig);
 	CLOCK_EnableClock(kCLOCK_Enet);
+*/
+}
+
+int PRINTF(const char *fmt_s, ...) {
+  va_list args;
+  va_start(args, fmt_s);
+  vprintf(fmt_s, args);
+  va_end(args);
 }
 
 static inline void uart_init(USART_TypeDef *uart, unsigned long baud) {
