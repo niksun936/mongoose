@@ -1,0 +1,22 @@
+MCU    MIMXRT1021DAG5A
+Board  IMXRT1020-EVK
+Build  Baremetal using MG_TCPIP stack
+
+Todo
+
+‐ Finalyze the linker/load stage
+    Issue:  upon  start/reset,  PC will points to and remain into
+    the ROM region 0x0020_0000‐0x0021_FFFF.
+‐ Complete no‐sdk initializations (peripherals, clocks)
+‐ Complete no‐sdk implementation (serial com, gpio)
+
+Info
+
+This example is a Port  work in progress  from the fully functio‐
+nal IDE/semi-SDK based raw MG_TCPIP driver example at https://gi‐
+thub.com/mongoose‐examples/nxp‐evkmimxrt1020‐mip‐baremetal
+
+This example uses the baremetal driver and relies  on  SDK  func‐
+tions to setup peripheral and clocks. It builds under MCU Expres‐
+so.
+
