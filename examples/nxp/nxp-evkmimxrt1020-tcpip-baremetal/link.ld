@@ -35,7 +35,8 @@ SECTIONS {
 
 /* Satisfy startup_mimxrt1021.c */
 
-_vStackBase = ORIGIN(sram)
+ENTRY(ResetISR)
+_vStackBase = ORIGIN(sram);
 _vStackTop = _estack;
 __data_section_table = _sdata;
 __data_section_table_end = _edata;

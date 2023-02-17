@@ -117,6 +117,10 @@ int PRINTF(const char *fmt_s, ...) {
   va_end(args);
 }
 
+int PUTCHAR(const char c) {
+  putchar(c);
+}
+
 static inline void uart_init(USART_TypeDef *uart, unsigned long baud) {
   // Todo
 }
