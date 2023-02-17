@@ -1,14 +1,10 @@
 ENTRY(Reset_Handler);
 MEMORY {
-  flash(rx) : ORIGIN = 0x08000000, LENGTH = 2048k
-  sram(rwx) : ORIGIN = 0x24000000, LENGTH = 512k  /* AXI SRAM in domain D1 */
-  /* 2.3.2: remaining SRAM is in other (non-contiguous) banks,
-     DTCM @0x20000000 is in domain D1 and not accessible by the ETH DMA controller in domain D2
-     SRAM @0x30000000 is in domain D2 and not directly available at startup to be used as stack (STM 8.5.9 page 366) */
+    flash(rx) : ORIGIN = 0x60000000, LENGTH = 8192k        /* On-board flash is 64 Mbits 8192 kB */
+    sram(rwx) : ORIGIN = 0x20200000, LENGTH = 128k         /* OC RAM in domain D_ */
+    sdram (rwx) : ORIGIN = 0x80000000, LENGTH = 0x1e00000  /* 30M bytes */  
 }
-_estack     = ORIGIN(sram) + LENGTH(sram);    /* stack points to end of SRAM */
-
-/* Std sections */
+_estack     = ORIGIN(sram) + LENGTH(sram);                 /* stack points to end of SRAM */
 
 SECTIONS {
   .vectors  : { KEEP(*(.isr_vector)) }  > flash
