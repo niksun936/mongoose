@@ -1,9 +1,9 @@
 ENTRY(ResetISR)
-/* ENTRY(Reset_Handler); */
 
 MEMORY {
+    sram_itc(rx) : ORIGIN = 0x00000000, LENGTH = 64k       /* SRAM ITC */
     flash(rx) : ORIGIN = 0x60000000, LENGTH = 8192k        /* On-board flash is 64 Mbits 8192 kB (0x1e00000) */
-    rom (rx) : ORIGIN = 0x20000000, LENGTH = 32k           /* ROM boot code */
+    rom (rx) : ORIGIN = 0x20000000, LENGTH = 64k           /* ROM boot code */
     sram(rwx) : ORIGIN = 0x20200000, LENGTH = 128k         /* OC RAM, (BSS, RW, STACK , etc...) domain D_ (0x1e00000) */
     sdram (rwx) : ORIGIN = 0x80000000, LENGTH = 30720k     /* 30M bytes (0x1e00000) */  
 }
@@ -39,4 +39,4 @@ _vStackTop = _estack;
 __data_section_table = _sdata;
 __data_section_table_end = _edata;
 __bss_section_table_end = _sbss;
-__section_table_end = _ebss;
+__section_table_end = _end; /* _ebss _end */
