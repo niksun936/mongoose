@@ -9,6 +9,9 @@ Todo
     the ROM region 0x0020_0000‐0x0021_FFFF.
 ‐ Complete no‐sdk initializations (peripherals, clocks)
 ‐ Complete no‐sdk implementation (serial com, gpio)
+- Clean files: most if not all of the FSL folder files can go
+- Few other header/src files might go too (remain board/mcu
+  and CMSIS)
 
 Info
 
