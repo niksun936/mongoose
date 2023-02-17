@@ -42,11 +42,3 @@ __data_section_table = _sdata;
 __data_section_table_end = _edata;
 __bss_section_table_end = _sbss;
 __section_table_end = _ebss;
-
-
-
-
-
-
-
-

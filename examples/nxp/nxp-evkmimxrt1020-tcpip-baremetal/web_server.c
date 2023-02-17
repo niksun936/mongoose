@@ -10,7 +10,7 @@ int mg_led_state = MG_LED_STANDBY;
 
 static void cb(struct mg_connection *c, int ev, void *ev_data, void *fn_data) {
   if (ev == MG_EV_HTTP_MSG) {
-	 unsigned int rt = mg_millis()/1000;
+	 unsigned int rt = (unsigned int)mg_millis()/1000;
 	 unsigned int rt_h = rt / 3600;
 	 unsigned int rt_m = (rt - 3600 * rt_h) / 60;
 	 unsigned int rt_s = rt - 3600 * rt_h - 60 * rt_m;
@@ -20,7 +20,7 @@ static void cb(struct mg_connection *c, int ev, void *ev_data, void *fn_data) {
   (void) ev_data;
 }
 
-void mg_run_server(struct mg_mgr *mgr, struct mg_tcpip_if* mif, int *mg_led_state) {
+void mg_run_server(struct mg_mgr *mgr, struct mg_tcpip_if* mif) {
   MG_INFO(("Starting Mongoose v%s", MG_VERSION));
   MG_INFO(("Listening on     : %s", s_listening_address));
 
@@ -35,18 +35,18 @@ void mg_run_server(struct mg_mgr *mgr, struct mg_tcpip_if* mif, int *mg_led_stat
   while (c) {
 	  mg_mgr_poll(mgr, 10); // Infinite event loop
 	  if (mif->state == MIP_STATE_DOWN) {
-		  *mg_led_state = MG_LED_ERROR;
+		  mg_led_state = MG_LED_ERROR;
 	  }
 	  if (mif->state == MIP_STATE_UP) {
-		  *mg_led_state = MG_LED_STANDBY;
+		  mg_led_state = MG_LED_STANDBY;
 	  }
 	  if (mif->state == MIP_STATE_READY) {
 		  if (!mgr->conns) {
-			  *mg_led_state = MG_LED_STANDBY;
+			  mg_led_state = MG_LED_STANDBY;
 		  } else if (mgr->conns) {
-			  *mg_led_state = MG_LED_LISTEN;
+			  mg_led_state = MG_LED_LISTEN;
 			  if (mgr->conns->next)
-				  *mg_led_state = MG_LED_CONNECT;
+				  mg_led_state = MG_LED_CONNECT;
 		  }
 	  }
   }

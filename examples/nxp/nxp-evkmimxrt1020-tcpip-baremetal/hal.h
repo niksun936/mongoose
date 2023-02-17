@@ -35,7 +35,8 @@ void toggle_user_led();
 void peripheral_enet_init(void);
 void clock_init(void);
 void board_init(void);
-int PRINTF(const char *fmt_s, ...);
+int PRINTF(const char *, ...);
+int PUTCHAR(const char c);
 
 static inline void uart_write_byte(USART_TypeDef *uart, uint8_t byte);
 static inline void uart_write_buf(USART_TypeDef *uart, char *buf, size_t len);

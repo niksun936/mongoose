@@ -19,6 +19,7 @@
 #define SETBITS(R, CLEARMASK, SETMASK) (R) = ((R) & ~(CLEARMASK)) | (SETMASK)
 
 void set_user_led(int i) {
+	(void) i;
 /*
 	if (!i)
 		GPIO_PinWrite(BOARD_USER_LED_GPIO, BOARD_USER_LED_GPIO_PIN, 1U); // Led OFF
@@ -111,30 +112,40 @@ void peripheral_enet_init(void) {
 }
 
 int PRINTF(const char *fmt_s, ...) {
+  int rv = 0;
   va_list args;
   va_start(args, fmt_s);
-  vprintf(fmt_s, args);
+  rv = vprintf(fmt_s, args);
   va_end(args);
+  return rv;
 }
 
 int PUTCHAR(const char c) {
-  putchar(c);
+  int rv = 0;
+  rv = putchar(c);
+  return rv;
 }
 
 static inline void uart_init(USART_TypeDef *uart, unsigned long baud) {
+  (void) uart;
+  (void) baud;
   // Todo
 }
 static inline void uart_write_byte(USART_TypeDef *uart, uint8_t byte) {
+  (void) uart;
+  (void) byte;
   // Todo
 }
 static inline void uart_write_buf(USART_TypeDef *uart, char *buf, size_t len) {
   while (len-- > 0) uart_write_byte(uart, *(uint8_t *) buf++);
 }
 static inline int uart_read_ready(USART_TypeDef *uart) {
+  (void) uart;
   // Todo
   return 0;
 }
 static inline uint8_t uart_read_byte(USART_TypeDef *uart) {
+  (void) uart;
   // Todo
   return (uint8_t) 0;
 }

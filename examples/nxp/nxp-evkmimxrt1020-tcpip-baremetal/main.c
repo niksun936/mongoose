@@ -24,11 +24,12 @@
 
 void mg_log_set_fn(mg_pfn_t, void *);
 void log_fn(char ch, void *param) {
+	(void) param;
 	PUTCHAR(ch);
 }
 
 volatile uint32_t g_systick_timer;	 // System tick counter
-volatile static uint64_t s_ticks;  	 // Counters, increased by IRQ handlers
+static volatile uint64_t s_ticks;  	 // Counters, increased by IRQ handlers
 
 void SysTick_Handler(void)
 {
@@ -126,7 +127,7 @@ int main(void)
 #endif
 	}
 	// Run Mongoose server (infinite loop)
-	mg_run_server(&mgr, &mif, &mg_led_state);
+	mg_run_server(&mgr, &mif);
 
 	mg_mgr_free(&mgr);        // Clear
 	mg_tcpip_free(&mif);      // Release after mg_mgr
