@@ -66,7 +66,20 @@ void startup_display() {
   PRINTF("\n\r");
 }
 
+  // Used to assert linker/flash etc ... working all right:
+  // Program with loop at &test_entry_call() upon entry.
+void test_entry_call(void);
+void test_entry_call(void) {
+  // Check entry point (PC with debugger)
+  while (1)
+    ;
+}
+
 int main(void) {
+
+  // Test: check entry point
+  test_entry_call();
+
   // System and peripherals init
   board_init();
   peripheral_enet_init();
