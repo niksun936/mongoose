@@ -1,11 +1,18 @@
+/*
+ * Todo
+ * 
+ * This boot/init linker file needs fix.
+ * 
+ */
+
 ENTRY(ResetISR)
 
 MEMORY {
     sram_itc(rx) : ORIGIN = 0x00000000, LENGTH = 64k       /* SRAM ITC */
-    flash(rx) : ORIGIN = 0x60000000, LENGTH = 8192k        /* On-board flash is 64 Mbits 8192 kB (0x1e00000) */
-    rom (rx) : ORIGIN = 0x20000000, LENGTH = 64k           /* ROM boot code */
-    sram(rwx) : ORIGIN = 0x20200000, LENGTH = 128k         /* OC RAM, (BSS, RW, STACK , etc...) domain D_ (0x1e00000) */
-    sdram (rwx) : ORIGIN = 0x80000000, LENGTH = 30720k     /* 30M bytes (0x1e00000) */  
+    flash(rx) :    ORIGIN = 0x60000000, LENGTH = 8192k     /* On-board flash is 64 Mbits 8192 kB (0x1e00000) */
+    rom (rx) :     ORIGIN = 0x20000000, LENGTH = 64k       /* ROM boot code */
+    sram(rwx) :    ORIGIN = 0x20200000, LENGTH = 128k      /* OC RAM, (BSS, RW, STACK , etc...) domain D_ (0x1e00000) */
+    sdram (rwx) :  ORIGIN = 0x80000000, LENGTH = 30720k    /* 30M bytes (0x1e00000) */  
 }
 _estack     = ORIGIN(sram) + LENGTH(sram);                 /* stack points to end of SRAM */
 
@@ -32,7 +39,7 @@ SECTIONS {
   _end = .;     /* for cmsis_gcc.h and init_ram() */
 }
 
-/* Satisfy startup_mimxrt1021.c */
+/* Definitions accoring to startup_mimxrt1021.c */
 
 _vStackBase = ORIGIN(sram);
 _vStackTop = _estack;
