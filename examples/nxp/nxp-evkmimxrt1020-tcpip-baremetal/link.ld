@@ -3,6 +3,9 @@
  * 
  * This boot/init linker file needs fix.
  * 
+ * Find minimal configuration which can load without error
+ * "Invalid flash header detected." (J-Link)
+ * 
  */
 
 ENTRY(ResetISR)
