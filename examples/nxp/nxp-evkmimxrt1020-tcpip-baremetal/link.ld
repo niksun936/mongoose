@@ -1,4 +1,5 @@
-ENTRY(ResetISR); /* ENTRY(Reset_Handler); */
+ENTRY(ResetISR)
+/* ENTRY(Reset_Handler); */
 
 MEMORY {
     flash(rx) : ORIGIN = 0x60000000, LENGTH = 8192k        /* On-board flash is 64 Mbits 8192 kB (0x1e00000) */
