@@ -75,6 +75,14 @@ void test_entry_call(void) {
     ;
 }
 
+void ResetTarget(void);
+void ResetTarget(void) {
+}
+
+void AfterResetTarget(void);
+void AfterResetTarget(void) {
+}
+
 int main(void) {
 
   // Test: check entry point
