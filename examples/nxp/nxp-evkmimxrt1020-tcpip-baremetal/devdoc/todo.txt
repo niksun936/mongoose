@@ -2,30 +2,40 @@ MCU    MIMXRT1021DAG5A
 Board  IMXRT1020-EVK
 Build  Baremetal using MG_TCPIP stack
 
-Todo
+	Boot section
 
-‐ Finalyze the linker/load stage
-    Issue:  upon  start/reset,  PC will points to and remain into
-    the ROM region 0x0020_0000‐0x0021_FFFF.
-    Files: link.ld to fix.
-‐ Complete no‐sdk initializations (peripherals, clocks)
-‐ Complete no‐sdk implementation (serial com, gpio)
-- Clean files: most if not all of the FSL folder files can go
-- Few other header/src files might go too (remain board/mcu
-  and CMSIS)
+	The i.MX-RT1020-EVK board has 8mb of external flash (NOR QSPI).
+	In order to make program in this area proper boot, a specific
+	procedure/header has to be provided.
+
+	For reference, see SDK examples or Segger sources linked below.
+
+	Todo
+
+	- Boot section (link.ld, build) is not complete with regards to
+	    QSPI flash program boot/run. We observe JLINK "Invalid flash
+	    header" and PC to remain in ROM region (0x0020_0000 - 0x0021
+	    _FFFF). A valid header/boot code is provided from Segger for
+	    reference example (see below).
+	‐ Complete no‐sdk init (peripherals, clocks)
+	‐ Complete no‐sdk calls (serial com, gpio)
+	- Clean: fsl directory can go. Kept for reference only, until
+	    baremetal is complete.
 
 Other references (iar 67.2)
 
-- Flash header format
-  Website: https://wiki.segger.com/i.MXRT1020
+	Segger sources (flash header)
 
-Info
+	- Flash header format
+	    Website: https://wiki.segger.com/i.MXRT1020
 
-This example is a Port  work in progress  from the fully functio‐
-nal IDE/semi-SDK based raw MG_TCPIP driver example at https://gi‐
-thub.com/mongoose‐examples/nxp‐evkmimxrt1020‐mip‐baremetal
+	Info
 
-This example uses the baremetal driver and relies  on  SDK  func‐
-tions to setup peripheral and clocks. It builds under MCU Expres‐
-so.
+	This example is a Port  work in progress  from the fully functio‐
+	nal IDE/semi-SDK based raw MG_TCPIP driver example at https://gi‐
+	thub.com/mongoose‐examples/nxp‐evkmimxrt1020‐mip‐baremetal
+	
+	This example uses the baremetal driver and relies  on  SDK  func‐
+	tions to setup peripheral and clocks. It builds under MCU Expres‐
+	so.
 
