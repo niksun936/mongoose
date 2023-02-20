@@ -7,7 +7,7 @@ CFLAGS += -DMG_ARCH=MG_ARCH_CUSTOM -DMG_ENABLE_TCPIP=1 -DMG_ENABLE_DRIVER_IMXRT1
 CFLAGS += $(CFLAGS_EXTRA)
 LDFLAGS ?= -Tlink.ld -nostdlib -nostartfiles --specs nano.specs -lc -lgcc -Wl,--gc-sections -Wl,-Map=$@.map
 
-SOURCES += mongoose.c net.c packed_fs.c main.c hal.c web_server.c syscalls.c
+SOURCES += mongoose.c net.c packed_fs.c main.c hal.c web_server.c syscalls.c sysinit.c
 SOURCES += startup/startup_mimxrt1021.c
 
 ifeq ($(OS),Windows_NT)

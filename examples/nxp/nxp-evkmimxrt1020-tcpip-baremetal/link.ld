@@ -1,9 +1,6 @@
 /*
- * Todo
+ * Fixme
  * 
- * This boot/init linker file needs fix.
- * 
- * Find minimal configuration which can load without error
  * "Invalid flash header detected." (J-Link)
  * 
  */
@@ -12,12 +9,11 @@ ENTRY(ResetISR)
 
 MEMORY {
     sram_itc(rx) : ORIGIN = 0x00000000, LENGTH = 64k       /* SRAM ITC */
-    flash(rx) :    ORIGIN = 0x60000000, LENGTH = 8192k     /* On-board flash is 64 Mbits 8192 kB (0x1e00000) */
-    rom (rx) :     ORIGIN = 0x20000000, LENGTH = 64k       /* ROM boot code */
-    sram(rwx) :    ORIGIN = 0x20200000, LENGTH = 128k      /* OC RAM, (BSS, RW, STACK , etc...) domain D_ (0x1e00000) */
-    sdram (rwx) :  ORIGIN = 0x80000000, LENGTH = 30720k    /* 30M bytes (0x1e00000) */  
+    flash(rx)    : ORIGIN = 0x60000000, LENGTH = 8192k     /* On-board flash is 64 Mbits 8192 kB (0x1e00000) */
+    rom (rx)     : ORIGIN = 0x20000000, LENGTH = 64k       /* ROM boot code */
+    sram(rwx)    : ORIGIN = 0x20200000, LENGTH = 128k      /* OC RAM, (BSS, RW, STACK , etc...) domain D_ (0x1e00000) */
+    sdram (rwx)  : ORIGIN = 0x80000000, LENGTH = 30720k    /* 30M bytes (0x1e00000) */  
 }
-_estack     = ORIGIN(sram) + LENGTH(sram);                 /* stack points to end of SRAM */
 
 SECTIONS {
   .vectors  : { KEEP(*(.isr_vector)) }  > flash
@@ -25,28 +21,31 @@ SECTIONS {
   .rodata   : { *(.rodata*) }           > flash
 
   .data : {
-    _sdata = .;   /* for init_ram() */
+    _sdata = .;                                            /* for init_ram() */
     *(.first_data)
     *(.data SORT(.data.*))
-    _edata = .;  /* for init_ram() */
+    _edata = .;                                            /* for init_ram() */
   } > sram AT > flash
   _sidata = LOADADDR(.data);
 
   .bss : {
-    _sbss = .;              /* for init_ram() */
+    _sbss = .;                                             /* for init_ram() */
     *(.bss SORT(.bss.*) COMMON)
-    _ebss = .;              /* for init_ram() */
+    _ebss = .;
   } > sram
 
   . = ALIGN(8);
-  _end = .;     /* for cmsis_gcc.h and init_ram() */
+  _end = .;                                                /* for cmsis_gcc.h and init_ram() */
 }
 
-/* Definitions accoring to startup_mimxrt1021.c */
+/*
+ * References startup_mimxrt1021.c, 
+ */
 
+_estack     = ORIGIN(sram) + LENGTH(sram);                 /* stack points to end of SRAM */
 _vStackBase = ORIGIN(sram);
 _vStackTop = _estack;
 __data_section_table = _sdata;
 __data_section_table_end = _edata;
 __bss_section_table_end = _sbss;
-__section_table_end = _end; /* _ebss _end */
+__section_table_end = _end;                                /* _ebss _end */
