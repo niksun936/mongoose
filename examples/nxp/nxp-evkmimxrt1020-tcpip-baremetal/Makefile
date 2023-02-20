@@ -8,7 +8,7 @@ CFLAGS += $(CFLAGS_EXTRA)
 LDFLAGS ?= -Tlink.ld -nostdlib -nostartfiles --specs nano.specs -lc -lgcc -Wl,--gc-sections -Wl,-Map=$@.map
 
 SOURCES += mongoose.c net.c packed_fs.c main.c hal.c web_server.c syscalls.c sysinit.c
-SOURCES += startup/startup_mimxrt1021.c
+SOURCES += startup/startup_mimxrt1021.c board/evkmimxrt1020_flexspi_nor_config.c board/fsl_flexspi_nor_boot.c
 
 ifeq ($(OS),Windows_NT)
   RM = cmd /C del /Q /F /S

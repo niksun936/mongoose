@@ -29,7 +29,7 @@ SECTIONS {
     KEEP(*(.boot_hdr.dcd_data))
     __boot_hdr_end__ = ABSOLUTE(.) ;
     . = 0x2000 ;
-  } >BOARD_FLASH
+  } >flash
   .vectors  : { KEEP(*(.isr_vector)) }  > flash
   .text     : { *(.text* .text.*) }     > flash
   .rodata   : { *(.rodata*) }           > flash

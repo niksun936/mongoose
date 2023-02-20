@@ -14,6 +14,11 @@ Todo
 - Few other header/src files might go too (remain board/mcu
   and CMSIS)
 
+Other references (iar 67.2)
+
+- Flash header format
+  Website: https://wiki.segger.com/i.MXRT1020
+
 Info
 
 This example is a Port  work in progress  from the fully functio‐
