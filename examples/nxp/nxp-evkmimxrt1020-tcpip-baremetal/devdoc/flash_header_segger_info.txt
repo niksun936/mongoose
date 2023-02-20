@@ -1,3 +1,19 @@
+Booting from flash on i.MX RT1020-EVK
+
+	The MIMX1020RT-EVK is configurd to boot from external flash
+	(QSPI NOR flash, size 8M) by default. When it is required to
+	boot from flash, it will init in ROM region 0x2000_0000 and
+	goes through configration/validation calls.
+
+Man pages
+
+	i.MXRT1020RM Reference manual
+
+	9.6.3.1 FlexSPI Configuration Block
+	9.6.3.2 Serial NOR configuration block (512 bytes)
+	9.6.3 Serial NOR and NAND Configuration based on FlexSPI
+	Interface
+
 QSPI support
 
 The RT1020 does not come with internal flash but with external flash connected to the FlexSPI bus, only. The external FlexSPI controller allows to connect several different flash types like QSPI and HyperFlash. Furthermore, the external flash can be connected to different pin / ports of the FlexSPI controller which makes a auto-detection very difficult thus a out-of-the-box solution which works for all setups is kind of impossible. For that reason, the J-Link software supports the evaluation board setup, only [...]
