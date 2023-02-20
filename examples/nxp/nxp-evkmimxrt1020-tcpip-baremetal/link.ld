@@ -1,7 +1,14 @@
 /*
- * Fixme
+ * Todo/Fixme
  * 
- * "Invalid flash header detected." (J-Link)
+ * Image made for internal flash will not work on MIMXRT1020-EVK.
+ * This NXP EVK flashes in QSPI external flash (Serial NOR) and
+ * requires a valid specific header ie at 0x6000_0000.
+ * 
+ * Ref flash_header.txt and reference manual 9.6.3.1.
+ * 
+ * Segger flash tool shows warning if header is invalid:
+ * ("Invalid flash header detected.", J-Link).
  * 
  */
 
