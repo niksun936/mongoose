@@ -15,7 +15,21 @@ MEMORY {
     sdram (rwx)  : ORIGIN = 0x80000000, LENGTH = 30720k    /* 30M bytes (0x1e00000) */  
 }
 
-SECTIONS {
+SECTIONS { 
+  .boot_hdr : ALIGN(4)                                     /* Image Vector Table and Boot Data (ext flash boot) */
+  {
+    FILL(0xff)
+    __boot_hdr_start__ = ABSOLUTE(.) ;
+    KEEP(*(.boot_hdr.conf))
+    . = 0x1000 ;
+    KEEP(*(.boot_hdr.ivt))
+    . = 0x1020 ;
+    KEEP(*(.boot_hdr.boot_data))
+    . = 0x1030 ;
+    KEEP(*(.boot_hdr.dcd_data))
+    __boot_hdr_end__ = ABSOLUTE(.) ;
+    . = 0x2000 ;
+  } >BOARD_FLASH
   .vectors  : { KEEP(*(.isr_vector)) }  > flash
   .text     : { *(.text* .text.*) }     > flash
   .rodata   : { *(.rodata*) }           > flash
