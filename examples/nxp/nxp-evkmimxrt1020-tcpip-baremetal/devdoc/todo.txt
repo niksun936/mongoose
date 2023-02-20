@@ -24,6 +24,10 @@ Build  Baremetal using MG_TCPIP stack
 
 Other references (iar 67.2)
 
+	IMXRT1020RM reference manual
+
+	- 9.6.1.2 FlexSPI Serial NOR Flash Boot Operation
+
 	Segger sources (flash header)
 
 	- Flash header format
