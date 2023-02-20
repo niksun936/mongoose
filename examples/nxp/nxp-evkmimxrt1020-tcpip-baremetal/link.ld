@@ -10,21 +10,25 @@
  *   Heap in OC RAM, size 0x20000, start
  *   stack in ITC RAM, size 0x4000, end
  * 
- * Ref flash_header.txt and reference manual 9.6.3.1.
+ * References
  * 
- * Segger flash tool warning when invalid header:
- * ("Invalid flash header detected.", J-Link).
+ *   Reference manual 9.6.3 9.6.3.1 9.6.3.2
+ *   flash_header.txt 
+ *   startup_mimxrt1021.c evkmimxrt1020_flexspi_nor_config.c/h fsl_flexspi_nor_boot.c/h
+ * 
+ *   Segger flash tool warning when invalid header:
+ *   ("Invalid flash header detected.", J-Link).
  * 
  */
 
 ENTRY(ResetISR)
 
 MEMORY {
-    sram_itc(rwx) : ORIGIN = 0x00000000, LENGTH = 64k       /* SRAM ITC */
-    sram_dtc(rwx) : ORIGIN = 0x20000000, LENGTH = 64k       /* SRAM DTC */
-    sram_oc(rwx)  : ORIGIN = 0x20200000, LENGTH = 128k      /* OC RAM (BSS, RW, STACK , etc...) */
-    flash(rx)     : ORIGIN = 0x60000000, LENGTH = 8192k     /* On-board flash is 64 Mbits 8192 kB (0x1e00000) */
-    sdram (rwx)   : ORIGIN = 0x80000000, LENGTH = 30720k    /* 30M bytes (0x1e00000) */
+    sram_itc(rx)  : ORIGIN = 0x00000000, LENGTH = 64k      /* SRAM ITC */
+    sram_dtc(rwx) : ORIGIN = 0x20000000, LENGTH = 64k      /* SRAM DTC */
+    sram_oc(rwx)  : ORIGIN = 0x20200000, LENGTH = 128k     /* OC RAM (BSS, RW, STACK , etc...) */
+    flash(rx)     : ORIGIN = 0x60000000, LENGTH = 8192k    /* On-board flash is 64 Mbits 8192 kB (0x1e00000) */
+    sdram (rwx)   : ORIGIN = 0x80000000, LENGTH = 30720k   /* 30M bytes (0x1e00000) */
 }
 
 SECTIONS { 
@@ -42,7 +46,8 @@ SECTIONS {
     __boot_hdr_end__ = ABSOLUTE(.) ;
     . = 0x2000 ;
   } >flash
-  .vectors  : { KEEP(*(.isr_vector)) }  > flash
+
+/*.vectors  : { KEEP(*(.isr_vector)) }  > flash */
   .text     : { *(.text* .text.*) }     > flash
   .rodata   : { *(.rodata*) }           > flash
 
@@ -63,10 +68,6 @@ SECTIONS {
   . = ALIGN(8);
   _end = .;                                                /* for cmsis_gcc.h and init_ram() */
 }
-
-/*
- * References startup_mimxrt1021.c, 
- */
 
 _estack     = ORIGIN(sram_oc) + LENGTH(sram_oc);           /* stack points to end of SRAM */
 _vStackBase = ORIGIN(sram_oc);

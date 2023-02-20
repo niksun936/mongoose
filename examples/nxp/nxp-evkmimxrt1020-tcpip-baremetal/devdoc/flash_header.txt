@@ -14,20 +14,22 @@ Man pages
 	9.6.3 Serial NOR and NAND Configuration based on FlexSPI
 	Interface
 
-QSPI support
+SEGGER J-Link
 
-The RT1020 does not come with internal flash but with external flash connected to the FlexSPI bus, only. The external FlexSPI controller allows to connect several different flash types like QSPI and HyperFlash. Furthermore, the external flash can be connected to different pin / ports of the FlexSPI controller which makes a auto-detection very difficult thus a out-of-the-box solution which works for all setups is kind of impossible. For that reason, the J-Link software supports the evaluation board setup, only [...]
+  QSPI support
 
-Supported QSPI setup
+    The RT1020 does not come with internal flash but with external flash connected to the FlexSPI bus, only. The external FlexSPI controller allows to connect several different flash types like QSPI and HyperFlash. Furthermore, the external flash can be connected to different pin / ports of the FlexSPI controller which makes a auto-detection very difficult thus a out-of-the-box solution which works for all setups is kind of impossible. For that reason, the J-Link software supports the evaluation board setup, only [...]
+
+  Supported QSPI setup
 
     J-Link Software: >= V6.64
     Hardware: NXP MIMXRT1020-EVK
     Flash: IS25LP064A (QSPI) connected to FlexSPI port A
 
-Signal Name 	GPIO name
-FlexSPI_SS0 	GPIO_SD_B1_11
-FlexSPI_CLK 	GPIO_SD_B1_07
-FlexSPI_D0_A 	GPIO_SD_B1_08
-FlexSPI_D1_A 	GPIO_SD_B1_10
-FlexSPI_D2_A 	GPIO_SD_B1_09
-FlexSPI_D3_A 	GPIO_SD_B1_06
+  Signal Name 	GPIO name
+  FlexSPI_SS0 	GPIO_SD_B1_11
+  FlexSPI_CLK 	GPIO_SD_B1_07
+  FlexSPI_D0_A 	GPIO_SD_B1_08
+  FlexSPI_D1_A 	GPIO_SD_B1_10
+  FlexSPI_D2_A 	GPIO_SD_B1_09
+  FlexSPI_D3_A 	GPIO_SD_B1_06

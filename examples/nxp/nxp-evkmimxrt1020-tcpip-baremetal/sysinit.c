@@ -7,6 +7,10 @@
 
 #include "hal.h"
 
+// Prevent opt ou of Flash header
+extern int __boot_hdr_dummy;
+const int *boot_hdr = &__boot_hdr_dummy;
+
 void SystemInit(void) {
   // Todo
 }

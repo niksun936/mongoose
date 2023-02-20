@@ -12,6 +12,10 @@ Build  Baremetal using MG_TCPIP stack
 
 	Todo
 
+	- Missing section .boot_hdr in binary
+	    arm-none-eabi-objdump -s nxp-evkmimxrt1020-mip-baremetal.axf | less
+	    shows 0x60002000 "Contents of section .text". We should see
+	    at 0x60000000 "Contents of section .boot_hdr" FCFB...V........ etc
 	- Boot section (link.ld, build) is not complete with regards to
 	    QSPI flash program boot/run. We observe JLINK "Invalid flash
 	    header" and PC to remain in ROM region (0x0020_0000 - 0x0021
