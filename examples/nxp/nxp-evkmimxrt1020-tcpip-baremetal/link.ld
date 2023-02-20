@@ -1,13 +1,18 @@
 /*
  * Todo/Fixme
  * 
- * Image made for internal flash will not work on MIMXRT1020-EVK.
- * This NXP EVK flashes in QSPI external flash (Serial NOR) and
- * requires a valid specific header ie at 0x6000_0000.
+ *   Image made for internal flash will not work on MIMXRT1020-EVK.
+ *   This NXP EVK flashes in QSPI external flash (Serial NOR) and
+ *   requires a valid specific header ie at 0x6000_0000.
+ * 
+ * Allocations
+ *
+ *   Heap in OC RAM, size 0x20000, start
+ *   stack in ITC RAM, size 0x4000, end
  * 
  * Ref flash_header.txt and reference manual 9.6.3.1.
  * 
- * Segger flash tool shows warning if header is invalid:
+ * Segger flash tool warning when invalid header:
  * ("Invalid flash header detected.", J-Link).
  * 
  */
@@ -15,11 +20,11 @@
 ENTRY(ResetISR)
 
 MEMORY {
-    sram_itc(rx) : ORIGIN = 0x00000000, LENGTH = 64k       /* SRAM ITC */
-    flash(rx)    : ORIGIN = 0x60000000, LENGTH = 8192k     /* On-board flash is 64 Mbits 8192 kB (0x1e00000) */
-    rom (rx)     : ORIGIN = 0x20000000, LENGTH = 64k       /* ROM boot code */
-    sram(rwx)    : ORIGIN = 0x20200000, LENGTH = 128k      /* OC RAM, (BSS, RW, STACK , etc...) domain D_ (0x1e00000) */
-    sdram (rwx)  : ORIGIN = 0x80000000, LENGTH = 30720k    /* 30M bytes (0x1e00000) */  
+    sram_itc(rwx) : ORIGIN = 0x00000000, LENGTH = 64k       /* SRAM ITC */
+    sram_dtc(rwx) : ORIGIN = 0x20000000, LENGTH = 64k       /* SRAM DTC */
+    sram_oc(rwx)  : ORIGIN = 0x20200000, LENGTH = 128k      /* OC RAM (BSS, RW, STACK , etc...) */
+    flash(rx)     : ORIGIN = 0x60000000, LENGTH = 8192k     /* On-board flash is 64 Mbits 8192 kB (0x1e00000) */
+    sdram (rwx)   : ORIGIN = 0x80000000, LENGTH = 30720k    /* 30M bytes (0x1e00000) */
 }
 
 SECTIONS { 
@@ -46,14 +51,14 @@ SECTIONS {
     *(.first_data)
     *(.data SORT(.data.*))
     _edata = .;                                            /* for init_ram() */
-  } > sram AT > flash
+  } > sram_oc AT > flash
   _sidata = LOADADDR(.data);
 
   .bss : {
     _sbss = .;                                             /* for init_ram() */
     *(.bss SORT(.bss.*) COMMON)
     _ebss = .;
-  } > sram
+  } > sram_oc
 
   . = ALIGN(8);
   _end = .;                                                /* for cmsis_gcc.h and init_ram() */
@@ -63,8 +68,8 @@ SECTIONS {
  * References startup_mimxrt1021.c, 
  */
 
-_estack     = ORIGIN(sram) + LENGTH(sram);                 /* stack points to end of SRAM */
-_vStackBase = ORIGIN(sram);
+_estack     = ORIGIN(sram_oc) + LENGTH(sram_oc);           /* stack points to end of SRAM */
+_vStackBase = ORIGIN(sram_oc);
 _vStackTop = _estack;
 __data_section_table = _sdata;
 __data_section_table_end = _edata;
