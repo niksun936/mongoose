@@ -36,11 +36,11 @@ SECTIONS {
   {
     FILL(0xff)
     __boot_hdr_start__ = ABSOLUTE(.) ;
-    KEEP(*(.boot_hdr.conf))
+    KEEP(*(.flash_conf))  /* replacing .boot_hdr.conf */   /* Ref evkmimxrt1020_flexspi_nor_config.c/h */
     . = 0x1000 ;
-    KEEP(*(.boot_hdr.ivt))
+    KEEP(*(.boot_hdr.ivt)) /* replacing .boot_hdr.ivt */  /* Ref fsl_flexspi_nor_boot.c/h */
     . = 0x1020 ;
-    KEEP(*(.boot_hdr.boot_data))
+    KEEP(*(.boot_hdr_boot_data)) /* replacing .boot_hdr.boot_data */  /* Ref fsl_flexspi_nor_boot.c/h */
     . = 0x1030 ;
     KEEP(*(.boot_hdr.dcd_data))
     __boot_hdr_end__ = ABSOLUTE(.) ;
