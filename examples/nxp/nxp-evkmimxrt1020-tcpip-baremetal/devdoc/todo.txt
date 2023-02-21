@@ -12,7 +12,7 @@ Build  Baremetal using MG_TCPIP stack
 
 	Todo
 
-	- Missing section .boot_hdr in binary
+	v Missing section .boot_hdr in binary -> Partly solved, next is IVT
 	    arm-none-eabi-objdump -s nxp-evkmimxrt1020-mip-baremetal.axf | less
 	    shows 0x60002000 "Contents of section .text". We should see
 	    at 0x60000000 "Contents of section .boot_hdr" FCFB...V........ etc
@@ -26,7 +26,20 @@ Build  Baremetal using MG_TCPIP stack
 	- Clean: fsl directory can go. Kept for reference only, until
 	    baremetal is complete.
 
-Other references (iar 67.2)
+	Caveeats
+
+	Wrong flash / IVT boot header can prevent subsequent SWD / Flash
+	connections and operations (ie wrong serial link frequency).
+	To restart, use the SD card start configuration without a card in
+	slot and power up, then switch back to flash. This should have the
+	MCU run into ROM code, waiting for the SD card slot.
+
+	DIP Switch configuration SW8 (backside of the EVK)
+	  SW8         1_2_3_4
+	  QSPI Flash  0-0-1-0
+	  SD Card     0-1-1-0
+
+Other references
 
 	IMXRT1020RM reference manual
 

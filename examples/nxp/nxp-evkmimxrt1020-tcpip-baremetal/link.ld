@@ -32,22 +32,26 @@ MEMORY {
 }
 
 SECTIONS { 
-  .boot_hdr : ALIGN(4)                                     /* Image Vector Table and Boot Data (ext flash boot) */
-  {
+  .boot_hdr : ALIGN(4) {                                   /* Image Vector Table and Boot Data (ext flash boot) */
     FILL(0xff)
     __boot_hdr_start__ = ABSOLUTE(.) ;
-    KEEP(*(.flash_conf))  /* replacing .boot_hdr.conf */   /* Ref evkmimxrt1020_flexspi_nor_config.c/h */
+    KEEP(*(.flash_conf))                                   /* Ref evkmimxrt1020_flexspi_nor_config.c/h */
     . = 0x1000 ;
-    KEEP(*(.boot_hdr.ivt)) /* replacing .boot_hdr.ivt */  /* Ref fsl_flexspi_nor_boot.c/h */
+    KEEP(*(.boot_hdr_ivt))                                 /* Ref fsl_flexspi_nor_boot.c/h */
     . = 0x1020 ;
-    KEEP(*(.boot_hdr_boot_data)) /* replacing .boot_hdr.boot_data */  /* Ref fsl_flexspi_nor_boot.c/h */
+    KEEP(*(.boot_hdr_boot_data))                           /* Ref fsl_flexspi_nor_boot.c/h */
     . = 0x1030 ;
     KEEP(*(.boot_hdr.dcd_data))
     __boot_hdr_end__ = ABSOLUTE(.) ;
     . = 0x2000 ;
   } >flash
 
-/*.vectors  : { KEEP(*(.isr_vector)) }  > flash */
+  .vectors  : {
+    FILL(0xff)
+    __vectors_start__ = ABSOLUTE(.) ;
+    KEEP(*(.isr_vector)) ;
+  } > flash
+
   .text     : { *(.text* .text.*) }     > flash
   .rodata   : { *(.rodata*) }           > flash
 
