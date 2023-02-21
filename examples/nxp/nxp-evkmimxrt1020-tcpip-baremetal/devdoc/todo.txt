@@ -12,21 +12,28 @@ Build  Baremetal using MG_TCPIP stack
 
 	Todo
 
-	v Missing section .boot_hdr in binary -> Partly solved, next is IVT
+	- In list
+	c Check: done with remaining issue(s)
+	v Done & validated
+
+	c Missing section .boot_hdr in binary -> Partly solved, next is IVT
 	    arm-none-eabi-objdump -s nxp-evkmimxrt1020-mip-baremetal.axf | less
 	    shows 0x60002000 "Contents of section .text". We should see
 	    at 0x60000000 "Contents of section .boot_hdr" FCFB...V........ etc
-	- Boot section (link.ld, build) is not complete with regards to
+	c Boot section (link.ld, build) is not complete with regards to
 	    QSPI flash program boot/run. We observe JLINK "Invalid flash
 	    header" and PC to remain in ROM region (0x0020_0000 - 0x0021
 	    _FFFF). A valid header/boot code is provided from Segger for
 	    reference example (see below).
+	c Flash section (boot/IVT) parly done, check the following issue:
+	  "Core did not halt on flash image verification.
+           Assuming faulty flash settings."
 	‐ Complete no‐sdk init (peripherals, clocks)
 	‐ Complete no‐sdk calls (serial com, gpio)
 	- Clean: fsl directory can go. Kept for reference only, until
 	    baremetal is complete.
 
-	Caveeats
+	Caveats
 
 	Wrong flash / IVT boot header can prevent subsequent SWD / Flash
 	connections and operations (ie wrong serial link frequency).
