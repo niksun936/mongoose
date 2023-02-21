@@ -25,9 +25,9 @@ Build  Baremetal using MG_TCPIP stack
 	    header" and PC to remain in ROM region (0x0020_0000 - 0x0021
 	    _FFFF). A valid header/boot code is provided from Segger for
 	    reference example (see below).
-	c Flash section (boot/IVT) parly done, check the following issue:
-	  "Core did not halt on flash image verification.
-           Assuming faulty flash settings."
+	- Flash section (boot/IVT) parly done, check the following issue:
+	  "Core did not halt on flash image verification. Assuming faulty
+          flash settings." PC remains in ROM region.
 	‐ Complete no‐sdk init (peripherals, clocks)
 	‐ Complete no‐sdk calls (serial com, gpio)
 	- Clean: fsl directory can go. Kept for reference only, until
@@ -46,18 +46,20 @@ Build  Baremetal using MG_TCPIP stack
 	  QSPI Flash  0-0-1-0
 	  SD Card     0-1-1-0
 
-Other references
+References
 
 	IMXRT1020RM reference manual
 
 	- 9.6.1.2 FlexSPI Serial NOR Flash Boot Operation
 
-	Segger sources (flash header)
+	- Segger sources (flash header)
 
 	- Flash header format
 	    Website: https://wiki.segger.com/i.MXRT1020
 
-	Info
+	- link_red.ld linker example from SDK/Redlib
+
+Info
 
 	This example is a Port  work in progress  from the fully functio‐
 	nal IDE/semi-SDK based raw MG_TCPIP driver example at https://gi‐

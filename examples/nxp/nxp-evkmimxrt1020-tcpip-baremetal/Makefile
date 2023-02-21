@@ -4,7 +4,6 @@ CFLAGS += -I. -ICMSIS -Iboard -Ifsl -Iheaders
 CFLAGS += -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-sp-d16
 CFLAGS += -DMG_ENABLE_PACKED_FS=1
 CFLAGS += -DMG_ARCH=MG_ARCH_CUSTOM -DMG_ENABLE_TCPIP=1 -DMG_ENABLE_DRIVER_IMXRT1020 -DMG_ENABLE_CUSTOM_MILLIS=1
-CFLAGS += -DXIP_EXTERNAL_FLASH=1 -DXIP_BOOT_HEADER_ENABLE=1
 CFLAGS += $(CFLAGS_EXTRA)
 LDFLAGS ?= -Tlink.ld -nostdlib -nostartfiles --specs nano.specs -lc -lgcc -Wl,--gc-sections -Wl,-Map=$@.map
 
