@@ -28,6 +28,8 @@ Build  Baremetal using MG_TCPIP stack
 	- Flash section (boot/IVT) parly done, check the following issue:
 	  "Core did not halt on flash image verification. Assuming faulty
           flash settings." PC remains in ROM region.
+	- No section .vectors in flash linker from SDK, but present in this
+	    build. Do we bounce back and just need to set IV addres in header ?
 	‐ Complete no‐sdk init (peripherals, clocks)
 	‐ Complete no‐sdk calls (serial com, gpio)
 	- Clean: fsl directory can go. Kept for reference only, until
