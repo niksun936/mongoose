@@ -27,7 +27,10 @@ Build  Baremetal using MG_TCPIP stack
 	    reference example (see below).
 	- Flash section (boot/IVT) parly done, check the following issue:
 	  "Core did not halt on flash image verification. Assuming faulty
-          flash settings." PC remains in ROM region.
+          flash settings." PC remains in ROM region. Observation:
+	  in binary image .boot_hdr seems incomplete (not fully initialized).
+	  Ref man Table 9-15. FlexSPI Configuration block §9.6.3.1 of RM for
+	  RT1020.
 	- No section .vectors in flash linker from SDK, but present in this
 	    build. Do we bounce back and just need to set IV addres in header ?
 	‐ Complete no‐sdk init (peripherals, clocks)
@@ -53,6 +56,10 @@ References
 	IMXRT1020RM reference manual
 
 	- 9.6.1.2 FlexSPI Serial NOR Flash Boot Operation
+
+	- 9.6.1.3 FlexSPI NOR boot flow chart
+	  -> MG Should probably use XIP image (execute in place from 0x6000
+	  0000 qspi flash.
 
 	- Segger sources (flash header)
 
