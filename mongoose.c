@@ -3017,11 +3017,11 @@ static int encode_variable_length(uint8_t *buf, size_t value) {
   return len;
 }
 
-static uint32_t decode_variable_length(const char *buf,
+static uint32_t decode_variable_length(const char *buf, size_t len,
                                        uint32_t *bytes_consumed) {
   uint32_t value = 0, multiplier = 1, offset;
 
-  for (offset = 0; offset < 4; offset++) {
+  for (offset = 0; offset < len; offset++) {
     uint8_t encoded_byte = ((uint8_t *) buf)[offset];
     value += (encoded_byte & 0x7F) * multiplier;
     multiplier *= 128;
@@ -3132,6 +3132,7 @@ static void mg_send_mqtt_properties(struct mg_connection *c,
 size_t mg_mqtt_next_prop(struct mg_mqtt_message *msg, struct mg_mqtt_prop *prop,
                          size_t ofs) {
   uint8_t *i = (uint8_t *) msg->dgram.ptr + msg->props_start + ofs;
+  uint8_t *end = (uint8_t *) msg->dgram.ptr + msg->dgram.len;
   size_t new_pos = ofs;
   uint32_t bytes_consumed;
   prop->id = i[0];
@@ -3173,7 +3174,8 @@ size_t mg_mqtt_next_prop(struct mg_mqtt_message *msg, struct mg_mqtt_prop *prop,
       new_pos += 2 + prop->val.len;
       break;
     case MQTT_PROP_TYPE_VARIABLE_INT:
-      prop->iv = decode_variable_length((char *) i, &bytes_consumed);
+      prop->iv = decode_variable_length((char *) i, (size_t ) (end - i), 
+                    &bytes_consumed);
       new_pos += bytes_consumed;
       break;
     default:
@@ -3340,7 +3342,9 @@ int mg_mqtt_parse(const uint8_t *buf, size_t len, uint8_t version,
       }
       if (p > end) return MQTT_MALFORMED;
       if (version == 5 && p + 2 < end) {
-        m->props_size = decode_variable_length((char *) p, &len_len);
+        m->props_size = decode_variable_length((char *) p, (size_t) (end - p), 
+                          &len_len);
+        if (len_len > 4) return MQTT_MALFORMED;
         m->props_start = (size_t) (p + len_len - buf);
         p += len_len + m->props_size;
       }
