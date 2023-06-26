@@ -353,6 +353,30 @@ struct mqtt_data {
 #define flags_released (1 << 3)
 #define flags_completed (1 << 4)
 
+#if MG_ARCH == MG_ARCH_WIN32
+static void start_thread(void (*f)(void *), void *p) {
+  _beginthread((void(__cdecl *)(void *)) f, 0, p);
+}
+#elif MG_ARCH == MG_ARCH_UNIX
+#include <pthread.h>
+static void start_thread(void (*f)(void *), void *p) {
+  union {
+    void (*f1)(void *);
+    void *(*f2)(void *);
+  } u = {f};
+  pthread_t thread_id = (pthread_t) 0;
+  pthread_attr_t attr;
+  (void) pthread_attr_init(&attr);
+  (void) pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+  pthread_create(&thread_id, &attr, u.f2, p);
+  pthread_attr_destroy(&attr);
+}
+#else
+static void start_thread(void (*f)(void *), void *p) {
+  (void) f, (void) p;
+}
+#endif
+
 static void mqtt_cb(struct mg_connection *c, int ev, void *evd, void *fnd) {
   struct mqtt_data *test_data = (struct mqtt_data *) fnd;
   char *buf = test_data->msg;
@@ -470,6 +494,48 @@ static void check_mqtt_message(struct mg_mqtt_opts *opts,
   }
 }
 
+static const char *s_url_on = "mqtt://0.0.0.0:1884";
+
+// Handle interrupts, like Ctrl-C
+static int s_signo;
+static void mqtt_server_signal_handler(int signo) {
+  s_signo = signo;
+}
+
+// Event handler function
+static void mqtt_server_fn(struct mg_connection *c, int ev, void *ev_data, void *fn_data) {
+  if (ev == MG_EV_MQTT_CMD) {
+    struct mg_mqtt_message *mm = (struct mg_mqtt_message *) ev_data;
+    MG_DEBUG(("cmd %d qos %d", mm->cmd, mm->qos));
+    switch (mm->cmd) {
+      case MQTT_CMD_CONNECT: {
+        // Client connects
+        if (mm->dgram.len < 9) {
+          mg_error(c, "Malformed MQTT frame");
+        } else {
+          uint8_t response[] = {0x00, 0x00, 0x82, 0x83};
+          mg_mqtt_send_header(c, MQTT_CMD_CONNACK, 0, sizeof(response));
+          mg_send(c, response, sizeof(response));
+        }
+        break;
+      }
+    }
+  (void) fn_data;
+  }
+}
+
+static void mqtt_server(void *p) {
+  struct mg_mgr mgr;                // Event manager
+  signal(SIGINT, mqtt_server_signal_handler);   // Setup signal handlers - exist event
+  signal(SIGTERM, mqtt_server_signal_handler);  // manager loop on SIGINT and SIGTERM
+  mg_mgr_init(&mgr);                // Initialise event manager
+  MG_INFO(("Starting on %s", s_url_on));      // Inform that we're starting
+  mg_mqtt_listen(&mgr, s_url_on, mqtt_server_fn, NULL);   // Create MQTT listener
+  while (s_signo == 0) mg_mgr_poll(&mgr, 1000);  // Event loop, 1s timeout
+  mg_mgr_free(&mgr);                             // Cleanup
+  (void) p;
+}
+
 static void test_mqtt_ver(uint8_t mqtt_version) {
   char tbuf[16], mbuf[50] = {0}, client_id[16], topic[16];
   struct mqtt_data test_data = {tbuf, mbuf, 16, 50, 0};
@@ -479,6 +545,11 @@ static void test_mqtt_ver(uint8_t mqtt_version) {
   struct mg_mqtt_prop properties[5];
   const char *url = "mqtt://broker.hivemq.com:1883";
   int i, retries;
+
+  if(mqtt_version == 5) {
+    start_thread(mqtt_server, NULL);
+  }
+
   mg_mgr_init(&mgr);
 
   // Connect with empty client ID, no options, ergo no MQTT != 3.1.1
@@ -606,6 +677,18 @@ connect_with_options:
   // dirty disconnect
   mg_mgr_free(&mgr);
   ASSERT(mgr.conns == NULL);
+
+  // connect to minimal mqtt server
+  if (mqtt_version == 5) {
+    memset(mbuf, 0, sizeof(mbuf));
+    memset(&opts, 0, sizeof(opts));
+    mg_mgr_init(&mgr);
+
+    opts.version = mqtt_version;
+    c = mg_mqtt_connect(&mgr, s_url_on, &opts, mqtt_cb, &test_data);
+    for (i = 0; i < 300 && mbuf[0] == 0; i++) mg_mgr_poll(&mgr, 10);
+    mg_mgr_free(&mgr);
+  }
 }
 
 static void test_mqtt(void) {
@@ -2972,30 +3055,6 @@ static uint32_t consumer(struct mg_queue *q) {
   }
   return crc;
 }
-
-#if MG_ARCH == MG_ARCH_WIN32
-static void start_thread(void (*f)(void *), void *p) {
-  _beginthread((void(__cdecl *)(void *)) f, 0, p);
-}
-#elif MG_ARCH == MG_ARCH_UNIX
-#include <pthread.h>
-static void start_thread(void (*f)(void *), void *p) {
-  union {
-    void (*f1)(void *);
-    void *(*f2)(void *);
-  } u = {f};
-  pthread_t thread_id = (pthread_t) 0;
-  pthread_attr_t attr;
-  (void) pthread_attr_init(&attr);
-  (void) pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-  pthread_create(&thread_id, &attr, u.f2, p);
-  pthread_attr_destroy(&attr);
-}
-#else
-static void start_thread(void (*f)(void *), void *p) {
-  (void) f, (void) p;
-}
-#endif
 
 static void test_queue(void) {
   char buf[512];

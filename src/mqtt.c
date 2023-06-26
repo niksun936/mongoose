@@ -388,6 +388,16 @@ int mg_mqtt_parse(const uint8_t *buf, size_t len, uint8_t version,
     case MQTT_CMD_CONNACK:
       if (end - p < 2) return MQTT_MALFORMED;
       m->ack = p[1];
+      p += 2;
+      
+      if (version == 5) {
+        m->props_size = decode_variable_length((char *) p, (size_t) (end - p), 
+                          &len_len);
+        if (len_len > 4) return MQTT_MALFORMED;
+        m->props_start = (size_t) (p + len_len - buf);
+        p += len_len + m->props_size;
+      }
+      if (p > end) return MQTT_MALFORMED;
       break;
     case MQTT_CMD_PUBACK:
     case MQTT_CMD_PUBREC:
@@ -438,6 +448,8 @@ static void mqtt_cb(struct mg_connection *c, int ev, void *ev_data,
       uint8_t version = c->is_mqtt5 ? 5 : 4;
       struct mg_mqtt_message mm;
       int rc = mg_mqtt_parse(c->recv.buf, c->recv.len, version, &mm);
+      mg_crc32((uint32_t) rand(), mm.dgram.ptr, mm.dgram.len);
+      mg_crc32((uint32_t) rand(), mm.data.ptr, mm.data.len);
       if (rc == MQTT_MALFORMED) {
         MG_ERROR(("%lu MQTT malformed message", c->id));
         c->is_closing = 1;
